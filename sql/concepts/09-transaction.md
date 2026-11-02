@@ -125,6 +125,8 @@ Oracle에서는 일반 `SELECT`가 이전에 확정된 버전을 읽을 수 있�
 
 ### 값의 변화를 확인하는 예제
 
+(자동 커밋(Auto-commit)을 비활성화한 상태로 실행)
+
 ```sql
 CREATE TABLE TX_TEST (
     ID     NUMBER PRIMARY KEY,
