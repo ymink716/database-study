@@ -65,7 +65,7 @@ INSERT INTO OBJ_EMP_TEST (ID, NAME, DEPT_ID, SALARY)
 VALUES (OBJ_EMP_SEQ.NEXTVAL, '홍길동', 110, 2000);
 
 SELECT OBJ_EMP_SEQ.CURRVAL FROM DUAL;
--- 이 세션에서 처음 NEXTVAL을 사용했다면 결과: 1
+-- 앞선 INSERT에서 NEXTVAL로 발급받은 번호를 반환
 ```
 
 - **`NEXTVAL`**: 시퀀스의 다음 번호를 생성해 반환한다.
@@ -86,7 +86,7 @@ WHERE SEQUENCE_NAME = 'OBJ_EMP_SEQ';
 
 <br>
 
-## 3. INDEX
+## 3. INDEX: 데이터 검색 속도 개선
 
 **인덱스(Index)**는 책의 찾아보기처럼 **검색할 값과 해당 행의 위치(ROWID)**를 관리하는 객체다. 조건에 맞는 행이 적다면 테이블 전체를 읽는 대신 인덱스를 통해 빠르게 찾을 수 있다.
 
@@ -205,6 +205,8 @@ DROP SYNONYM OBJ_EMP_ALIAS;
 - **공용 동의어(Public Synonym)**: 모든 사용자가 이름을 참조할 수 있는 동의어로, `CREATE PUBLIC SYNONYM`으로 생성한다. 생성하려면 별도의 시스템 권한이 필요하다.
 
 **동의어를 생성해도 원본 객체에 대한 접근 권한이 자동으로 부여되지는 않는다.**
+
+### 실습 객체 정리
 
 ```sql
 -- 실습 종료 후 객체 정리
