@@ -67,7 +67,7 @@ WHERE e.DEPT_ID = 110;
 
 Oracle의 **SGA(System Global Area)**는 여러 프로세스가 함께 사용하는 공유 메모리 영역이다. SQL 실행 정보를 재사용하거나, 자주 사용하는 데이터 블록을 메모리에 저장하는 데 활용된다.
 
-![SGA의 주요 캐시와 역할](../assets/images/sql-tuning-ch1-sga.png)
+<p align="center"><img src="../assets/images/sql-tuning-ch1-sga.png" alt="SGA의 주요 캐시와 역할" width="500"></p>
 
 | 구성 요소                 | 위치             | 역할                                         |
 | ------------------------- | ---------------- | -------------------------------------------- |
@@ -82,7 +82,7 @@ Oracle의 **SGA(System Global Area)**는 여러 프로세스가 함께 사용하
 
 같은 SQL이 반복 실행될 때마다 새로운 실행 계획을 만들면 CPU 사용과 공유 메모리 경합이 증가할 수 있다. Oracle은 Library Cache의 공유 커서(Shared Cursor)를 재사용하여 이를 줄인다.
 
-![SQL 공유 커서 재사용과 파싱 흐름](../assets/images/sql-tuning-ch1-parse.png)
+<p align="center"><img src="../assets/images/sql-tuning-ch1-parse.png" alt="SQL 공유 커서 재사용과 파싱 흐름" width="500"></p>
 
 | 구분      | Soft Parse                     | Hard Parse                            |
 | --------- | ------------------------------ | ------------------------------------- |
@@ -160,7 +160,7 @@ SQL을 실행하려면 테이블이나 인덱스에 저장된 데이터 블록�
 
 ### 3.2. Oracle 데이터 저장 구조
 
-![Oracle의 논리적 저장 구조와 데이터 파일](../assets/images/sql-tuning-ch1-storage.png)
+<p align="center"><img src="../assets/images/sql-tuning-ch1-storage.png" alt="Oracle의 논리적 저장 구조와 데이터 파일" width="500"></p>
 
 | 구성 요소      | 의미                                                 |
 | -------------- | ---------------------------------------------------- |
@@ -206,7 +206,7 @@ WHERE NAME = 'db_block_size';
 
 **랜덤 액세스(Random Access)**는 순서와 관계없이 필요한 블록 주소로 직접 접근하는 방식이다. 대표적인 사례는 인덱스에서 찾은 `ROWID`를 이용해 테이블 블록을 읽는 작업이다.
 
-![테이블과 인덱스의 시퀀셜·랜덤 액세스](../assets/images/sql-tuning-ch1-scan.png)
+<p align="center"><img src="../assets/images/sql-tuning-ch1-scan.png" alt="테이블과 인덱스의 시퀀셜·랜덤 액세스" width="500"></p>
 
 | 구분      | Sequential Access                      | Random Access                  |
 | --------- | -------------------------------------- | ------------------------------ |
@@ -222,7 +222,7 @@ WHERE NAME = 'db_block_size';
 
 SQL 실행 시 필요한 블록을 먼저 버퍼 캐시에서 찾고, 없으면 디스크에서 읽어 캐시에 적재한다.
 
-![버퍼 캐시 적중과 논리적·물리적 I/O](../assets/images/sql-tuning-ch1-cache-io.png)
+<p align="center"><img src="../assets/images/sql-tuning-ch1-cache-io.png" alt="버퍼 캐시 적중과 논리적·물리적 I/O" width="500"></p>
 
 - **논리적 I/O(Logical I/O):** DB Buffer Cache의 데이터 블록에 접근하는 작업
 - **물리적 I/O(Physical I/O):** 디스크(스토리지)에서 데이터 블록을 실제로 읽어오는 작업
@@ -245,7 +245,7 @@ SQL 실행 시 필요한 블록을 먼저 버퍼 캐시에서 찾고, 없으면 
 
 **Single Block I/O와 Multiblock I/O**는 한 번의 물리적 I/O 요청(I/O Call)으로 읽어오는 데이터 블록의 개수에 따른 구분이다.
 
-![Single Block I/O와 Multiblock I/O](../assets/images/sql-tuning-ch1-single-multi.png)
+<p align="center"><img src="../assets/images/sql-tuning-ch1-single-multi.png" alt="Single Block I/O와 Multiblock I/O" width="500"></p>
 
 | 구분      | Single Block I/O                    | Multiblock I/O                               |
 | --------- | ----------------------------------- | -------------------------------------------- |
@@ -284,7 +284,7 @@ Oracle은 DB Buffer Cache에서 원하는 블록을 효율적으로 찾기 위�
 
 블록 주소(DBA)에 해시 함수(Hash Function)를 적용해 해당 **해시 체인(Hash Chain)**을 찾고, 연결된 버퍼 헤더(Buffer Header)를 통해 실제 버퍼 블록에 접근한다.
 
-![해시 체인과 버퍼 헤더·버퍼 블록의 연결 구조](../assets/images/sql-tuning-ch1-hash-latch.png)
+<p align="center"><img src="../assets/images/sql-tuning-ch1-hash-latch.png" alt="해시 체인과 버퍼 헤더·버퍼 블록의 연결 구조" width="500"></p>
 
 그림에서는 `mod(x, 5)`를 해시 함수로 가정한다. 예를 들어 20번 블록은 `20 % 5 = 0`이므로 0번 해시 체인을 탐색한다.
 

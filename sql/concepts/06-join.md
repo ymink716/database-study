@@ -19,7 +19,7 @@
 
 정보를 여러 테이블에 나누어 저장하더라도, 조인하면 필요한 데이터를 함께 조회할 수 있다.
 
-![S_EMP, S_DEPT, S_REGION의 연결 관계 - SQL의 정석 교재 그림](../../assets/images/sql-join-relationship-textbook.png)
+<p align="center"><img src="../../assets/images/sql-join-relationship-textbook.png" alt="S_EMP, S_DEPT, S_REGION의 연결 관계 - SQL의 정석 교재 그림" width="500"></p>
 
 | 연결할 테이블         | 연결 조건                        | 의미                      |
 | --------------------- | -------------------------------- | ------------------------- |
@@ -172,7 +172,7 @@ ORDER BY e.ID;
 
 INNER JOIN은 조건에 맞는 행만 보여준다. 반면 **OUTER JOIN(외부 조인)**은 조건에 일치하지 않는 행도 **지정한 테이블 쪽에서는 유지**할 수 있다. 상대 테이블에서 연결되는 행이 없으면 그쪽 컬럼은 `NULL`로 나타난다.
 
-![INNER, LEFT, RIGHT, FULL OUTER JOIN의 행 유지 차이](../../assets/images/sql-join-types.png)
+<p align="center"><img src="../../assets/images/sql-join-types.png" alt="INNER, LEFT, RIGHT, FULL OUTER JOIN의 행 유지 차이" width="500"></p>
 
 | 종류               | 남기는 행                                  |
 | ------------------ | ------------------------------------------ |
@@ -211,7 +211,7 @@ ORDER BY c.ID;
 
 ### Oracle `(+)` 문법
 
-![OUTER JOIN](../../assets/images/sql-outer-join.png)
+<p align="center"><img src="../../assets/images/sql-outer-join.png" alt="OUTER JOIN" width="500"></p>
 
 ```sql
 SELECT e.NAME AS SALES_REP_NAME,
@@ -317,7 +317,7 @@ CROSS JOIN SALGRADE;
 
 `JOIN`이 서로 연관된 행을 찾아 **컬럼을 옆으로 붙이는 것**에 가깝다면, SET 연산자는 **여러 SELECT 결과의 행을 위아래로 합치는 것**에 가깝다.
 
-![JOIN은 가로 결합, UNION ALL은 세로 결합](../../assets/images/sql-join-vs-union-all.png)
+<p align="center"><img src="../../assets/images/sql-join-vs-union-all.png" alt="JOIN은 가로 결합, UNION ALL은 세로 결합" width="500"></p>
 
 ### UNION ALL과 UNION
 

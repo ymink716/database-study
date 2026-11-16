@@ -92,7 +92,7 @@ WHERE SEQUENCE_NAME = 'OBJ_EMP_SEQ';
 
 Oracle의 대표적인 인덱스는 **B-Tree 기반 인덱스**로, 루트(Root)와 브랜치(Branch) 블록을 거쳐 리프(Leaf) 블록에서 인덱스 키와 `ROWID`를 찾는다. 리프 블록은 정렬된 상태로 서로 연결되어 있다.
 
-![Oracle B-Tree 인덱스 구조](../../assets/images/sql-btree-index-structure.png)
+<p align="center"><img src="../../assets/images/sql-btree-index-structure.png" alt="Oracle B-Tree 인덱스 구조" width="500"></p>
 
 - **UNIQUE 인덱스**: 인덱스 키의 중복을 허용하지 않는다. PK·UNIQUE 제약조건을 설정하면 이를 지원하는 인덱스가 자동으로 생성되거나 기존 인덱스가 활용될 수 있다.
 - **NON-UNIQUE 인덱스**: 같은 키 값을 여러 행에서 사용할 수 있다.

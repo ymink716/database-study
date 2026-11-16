@@ -47,7 +47,7 @@
 
 ## 3. 데이터베이스 기본 용어
 
-![테이블 구조](../../assets/images/sql-table-structure.png)
+<p align="center"><img src="../../assets/images/sql-table-structure.png" alt="테이블 구조" width="500"></p>
 
 | 용어             | 설명                                                   |
 | ---------------- | ------------------------------------------------------ |
