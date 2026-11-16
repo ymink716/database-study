@@ -211,7 +211,7 @@ ORDER BY c.ID;
 
 ### Oracle `(+)` 문법
 
-![OUTER JOIN](../../assets/images/outer-join.png)
+![OUTER JOIN](../../assets/images/sql-outer-join.png)
 
 ```sql
 SELECT e.NAME AS SALES_REP_NAME,
