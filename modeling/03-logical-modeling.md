@@ -12,7 +12,7 @@
 
 ## 1. 논리 모델링 개요
 
-**논리 모델링**(Logical Data Modeling)은 개념 모델링에서 파악한 핵심 엔티티와 주요 관계를 바탕으로, 업무 규칙을 반영해 데이터 구조를 구체화하는 단계다.
+**논리 모델링**(Logical Data Modeling)은 개념 모델링에서 파악한 핵심 엔티티와 주요 관계를 바탕으로, 업무 규칙을 반영해 데이터 구조를 구체화하는 단계이다.
 
 - 비즈니스 전체 영역의 데이터 구조를 상세하게 설계한다.
 - 주제영역 단위로 논리 모델링을 진행한다.
@@ -33,15 +33,13 @@
 - 업무 주체 및 대상(subject & object): 고객, 상품, 사원, 예금
 - 장소(where): 물류창고, 공장, 강의장
 
-ex) 고객은 누구인가? 비회원도 고객? 외국인도 고객? 고객을 등록하기 위한 최소한의 정보는?
-
 ### 파생 엔티티
 
 **파생 엔티티**는 핵심 엔티티와 관련된 정보를 별도로 관리하기 위한 엔티티이다. 대표적인 유형으로는 상세, 상태, 이력, 교차 엔티티가 있다.
 
 예를 들어, 사무용품 구매 승인을 요청하는 품의서에 ‘복사용지 3상자’와 ‘토너 2개’를 적을 수 있다. 이때 승인 요청은 한 번이므로 `품의`는 한 건이고, 구매 항목은 두 가지이므로 `품의내역`은 두 건이다.
 
-<p align="center"><img src="../assets/images/modeling-derived-entities.png" alt="품의를 중심으로 품의내역·진행상태·첨부파일·이력·거래처를 연결한 ERD" width="500"></p>
+<p>&emsp;<img src="../assets/images/modeling-derived-entities.png" alt="품의를 중심으로 품의내역·진행상태·첨부파일·이력·거래처를 연결한 ERD" width="500"></p>
 
 - **상세 엔티티 — 품의내역**  
   품의 제목과 작성일은 품의 한 건에 대해 한 번만 기록한다. 수량과 단가는 품목마다 다를 수 있으므로 `품의내역`에 항목별로 기록한다.
@@ -73,7 +71,7 @@ ex) 고객은 누구인가? 비회원도 고객? 외국인도 고객? 고객을 
 
 과거의 특정 날짜에 어떤 과제명을 사용했는지 조회하려면, 과제명과 함께 시간 정보도 기록해야 한다.
 
-<p align="center"><img src="../assets/images/modeling-history.png" alt="과제명 변경을 점 이력과 선분 이력으로 표현한 표와 시간축" width="500"></p>
+<p>&emsp;<img src="../assets/images/modeling-history.png" alt="과제명 변경을 점 이력과 선분 이력으로 표현한 표와 시간축" width="500"></p>
 
 - **점 이력** — 값이 바뀐 시점을 기록한다. 4월 1일의 과제명을 찾으려면 해당 과제의 기록 중 변경일자가 4월 1일이거나 그보다 앞선 가장 최근 기록을 찾는다.
 - **선분 이력** — 각 값이 유효한 시작일과 종료일을 기록한다. 4월 1일을 포함하는 기간을 찾으면 당시 과제명을 알 수 있다.
@@ -82,7 +80,7 @@ ex) 고객은 누구인가? 비회원도 고객? 외국인도 고객? 고객을 
 
 여기서 최종 데이터는 **현재 사용 중인 값**을 뜻한다. 과제명이 `질의형 검색`에서 `질의응답형 검색`으로 바뀌었다고 하자.
 
-<p align="center"><img src="../assets/images/modeling-history-current.png" alt="과제명을 변경한 뒤 현재 값을 이력에서 제외한 경우와 포함한 경우" width="500"></p>
+<p>&emsp;<img src="../assets/images/modeling-history-current.png" alt="과제명을 변경한 뒤 현재 값을 이력에서 제외한 경우와 포함한 경우" width="500"></p>
 
 - **최종 데이터 미포함(왼쪽)** — 이력에는 이전 이름인 `질의형 검색`만 남긴다. 현재 이름인 `질의응답형 검색`은 과제 테이블에서 확인한다.
 - **최종 데이터 포함(오른쪽)** — 이전 이름과 현재 이름을 모두 이력에 남긴다. 이력 테이블의 가장 최근 기록에서도 `질의응답형 검색`을 확인할 수 있다.
@@ -122,13 +120,13 @@ ex) 고객은 누구인가? 비회원도 고객? 외국인도 고객? 고객을 
 - **일반화(Generalization)** — 여러 엔티티의 공통점을 찾아 상위 엔티티로 묶는다. 예를 들어 개인고객과 법인고객이 공통으로 갖는 고객번호와 고객명은 `고객`에서 관리한다.
 - **특수화(Specialization)** — 상위 엔티티를 업무상 의미 있는 하위 유형으로 나눈다. 예를 들어 `고객`을 `개인고객`과 `법인고객`으로 구분하고, 법인등록번호는 `법인고객`에서 관리한다.
 
-<p align="center"><img src="../assets/images/modeling-entity-integration.png" alt="개인고객과 법인고객을 고객으로, 여러 상품 유형을 상품으로 묶은 ERD" width="500"></p>
+<p>&emsp;<img src="../assets/images/modeling-entity-integration.png" alt="개인고객과 법인고객을 고객으로, 여러 상품 유형을 상품으로 묶은 ERD" width="500"></p>
 
 ### 데이터 통합
 
 데이터의 분류 체계, 식별 체계, 속성 체계를 일원화하는 과정
 
-<p align="center"><img src="../assets/images/modeling-data-integration.png" alt="데이터 통합을 위해 분류체계·식별체계·속성체계를 일원화하는 과정" width="500"></p>
+<p>&emsp;<img src="../assets/images/modeling-data-integration.png" alt="데이터 통합을 위해 분류체계·식별체계·속성체계를 일원화하는 과정" width="500"></p>
 
 <br>
 
@@ -141,7 +139,7 @@ ex) 고객은 누구인가? 비회원도 고객? 외국인도 고객? 고객을 
 - 행위의 주체, 대상, 상세, 인과, 역할/자격, 구성, 참조 관계 등으로 구분
 - 각 관계는 양방향으로 읽으면서 **몇 건까지 연결될 수 있는지(관계수)**, **반드시 연결되어야 하는지(선택성)**, **식별자 상속** 을 정한다. 역할을 구별할 필요가 있으면 관계명을 붙인다.
 
-<p align="center"><img src="../assets/images/modeling-department-employee-relationships.png" alt="부서와 사원 사이의 소속부서 관계와 부서장 관계" width="500"></p>
+<p>&emsp;<img src="../assets/images/modeling-department-employee-relationships.png" alt="부서와 사원 사이의 소속부서 관계와 부서장 관계" width="500"></p>
 
 - **소속부서(위쪽 선)** — 한 사원의 소속을 알고 싶으면 `사원`에 기록된 `부서번호`로 해당 부서를 찾는다. 같은 부서번호를 가진 사원들을 모으면 그 부서의 구성원도 알 수 있다.
 - **부서장(아래쪽 선)** — 한 부서의 부서장을 알고 싶으면 `부서`에 기록된 `부서장사원번호`로 해당 사원을 찾는다.
@@ -165,7 +163,7 @@ ex) 고객은 누구인가? 비회원도 고객? 외국인도 고객? 고객을 
 <details>
 <summary>인조 식별자는 언제 고려할까?</summary>
 
-<p align="center"><img src="../assets/images/modeling-surrogate-identifier.png" alt="거래처번호, 입찰번호, 카드관리번호를 사용한 인조 식별자 예시" width="500"></p>
+<p>&emsp;<img src="../assets/images/modeling-surrogate-identifier.png" alt="거래처번호, 입찰번호, 카드관리번호를 사용한 인조 식별자 예시" width="500"></p>
 
 - **업무 절차상 먼저 등록해야 할 때** — 사업자등록번호를 나중에 입력하는 거래처도 있다. 등록 시점에 `거래처번호`를 부여하면 사업자등록번호가 없어도 거래처를 구별할 수 있다.
 - **복합키를 단순화할 때** — 발주번호와 입찰마감일자의 조합으로 구별하던 입찰에 `입찰번호`를 부여한다. 그러면 `입찰업체`는 자신이 참여한 입찰을 `입찰번호` 하나로 참조할 수 있다.
@@ -213,33 +211,33 @@ ex) 고객은 누구인가? 비회원도 고객? 외국인도 고객? 고객을 
 
 **단어·도메인·용어의 관계**
 
-<p align="center"><img src="../assets/images/modeling-standardization-overview.png" alt="표준 단어를 조합해 용어를 만들고 도메인으로 데이터 형식을 정하는 과정" width="500"></p>
+<p>&emsp;<img src="../assets/images/modeling-standardization-overview.png" alt="표준 단어를 조합해 용어를 만들고 도메인으로 데이터 형식을 정하는 과정" width="500"></p>
 
 **① 단어 표준화**
 
 단어사전에 대표 표기와 약어를 등록한다. 같은 뜻의 단어가 여러 개일 때 어떤 단어를 쓸지, 새 영문 약어는 어떻게 지을지도 정한다.
 
-<p align="center"><img src="../assets/images/modeling-standard-word-dictionary.png" alt="단어사전의 고객·전화번호 정의와 영문 약어" width="500"></p>
+<p>&emsp;<img src="../assets/images/modeling-standard-word-dictionary.png" alt="단어사전의 고객·전화번호 정의와 영문 약어" width="500"></p>
 
-<p align="center"><img src="../assets/images/modeling-standard-word-rules.png" alt="표준 단어의 명명 규칙과 동의어 관리 기준" width="500"></p>
+<p>&emsp;<img src="../assets/images/modeling-standard-word-rules.png" alt="표준 단어의 명명 규칙과 동의어 관리 기준" width="500"></p>
 
-<p align="center"><img src="../assets/images/modeling-standard-abbreviation-rules.png" alt="영문 약어의 길이와 축약 기준" width="500"></p>
+<p>&emsp;<img src="../assets/images/modeling-standard-abbreviation-rules.png" alt="영문 약어의 길이와 축약 기준" width="500"></p>
 
 **② 도메인 표준화**
 
-<p align="center"><img src="../assets/images/modeling-standard-domain.png" alt="코드·여부·명칭·일자·금액 등에 적용하는 도메인과 유효값" width="500"></p>
+<p>&emsp;<img src="../assets/images/modeling-standard-domain.png" alt="코드·여부·명칭·일자·금액 등에 적용하는 도메인과 유효값" width="500"></p>
 
 **③ 코드 표준화**
 
 코드값은 코드 유형과 함께 읽는다. 아래 사전에서 같은 `01`도 결재상태에서는 ‘기안’, 결재수단에서는 ‘신용카드’를 뜻한다.
 
-<p align="center"><img src="../assets/images/modeling-standard-code-dictionary.png" alt="코드 유형별 코드값과 코드명을 정리한 코드 사전" width="500"></p>
+<p>&emsp;<img src="../assets/images/modeling-standard-code-dictionary.png" alt="코드 유형별 코드값과 코드명을 정리한 코드 사전" width="500"></p>
 
-<p align="center"><img src="../assets/images/modeling-standard-code-types.png" alt="분류형·일련번호형·약어형·차용형 코드 체계의 예시" width="500"></p>
+<p>&emsp;<img src="../assets/images/modeling-standard-code-types.png" alt="분류형·일련번호형·약어형·차용형 코드 체계의 예시" width="500"></p>
 
 **④ 용어 표준화**
 
-<p align="center"><img src="../assets/images/modeling-standard-term.png" alt="고객전화번호 등 실제 속성의 영문명·정의·도메인을 연결한 용어 사전" width="500"></p>
+<p>&emsp;<img src="../assets/images/modeling-standard-term.png" alt="고객전화번호 등 실제 속성의 영문명·정의·도메인을 연결한 용어 사전" width="500"></p>
 
 </details>
 

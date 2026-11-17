@@ -9,40 +9,20 @@
 
 ### 1.1. SQL은 선언적·집합적 언어
 
-SQL은 **구조적(Structured), 집합적(Set-based), 선언적(Declarative) 질의 언어**다. 개발자는 _무엇을 조회할지(What)_ 선언하지만, 데이터를 _어떤 순서와 방법으로 읽을지(How)_ 일일이 지정하지 않는다.
-
-```sql
-SELECT NAME, SALARY
-FROM S_EMP
-WHERE DEPT_ID = 110;
-```
-
-이 SQL은 110번 부서의 직원 이름과 급여를 요청할 뿐, 테이블 전체를 읽을지 인덱스를 사용할지 지시하지 않는다. 하지만 결과를 만들려면 실제로 데이터를 읽고 조건을 검사하는 **절차적인 실행 과정**이 필요하다.
+SQL은 **구조적(Structured), 집합적(Set-based), 선언적(Declarative) 질의 언어**이다. 개발자는 _무엇을 조회할지(What)_ 선언하지만, 데이터를 _어떤 순서와 방법으로 읽을지(How)_ 일일이 지정하지 않는다.
 
 **SQL 옵티마이저(Optimizer)** 는 데이터 접근 방법, 조인 순서, 조인 방식 등을 결정한다. 즉, SQL의 선언적인 요청을 실행 가능한 처리 절차로 연결해 주는 핵심 엔진이다.
 
 ### 1.2. SQL 처리 과정
 
-| 단계                      | 역할                                                                |
-| ------------------------- | ------------------------------------------------------------------- |
-| **SQL Parsing**           | SQL을 분석하고 문법·의미의 유효성을 검사                            |
-| **SQL Optimization**      | 통계정보를 기반으로 실행 경로의 예상 비용을 비교하고 실행 계획 선택 |
-| **Row Source Generation** | 선택된 실행 계획을 실행 가능한 내부 연산 구조로 변환                |
-| **SQL Execution**         | 실행 계획에 따라 데이터에 접근하고 SQL 연산 수행                    |
+SQL은 선언적으로 작성되지만, DBMS는 이를 실제로 수행할 수 있는 절차로 변환해야 한다. Oracle의 SQL 처리 과정은 다음과 같다.
 
-SQL은 원하는 결과를 선언하지만, DBMS는 이를 실제로 수행할 실행 절차가 필요하다. **옵티마이저는 효율적인 실행 계획을 선택하며, SQL 실행 엔진은 해당 계획에 따라 작업을 수행한다.**
-
-**① SQL 파싱(Parsing)**
-
-파서는 SQL 구성 요소를 분석하여 파싱 트리(Parse Tree)를 만들고, 문법 검사(Syntax Check)와 의미 검사(Semantic Check)를 수행한다. 예를 들어 키워드 오류, 존재하지 않는 컬럼·테이블, 객체 접근 권한 등을 확인한다.
-
-**② SQL 최적화(Optimization)**
-
-옵티마이저는 테이블·인덱스·컬럼 등의 통계정보를 활용해 가능한 실행 방법을 평가하고, 예상 비용이 낮은 실행 계획(Execution Plan)을 선택한다.
-
-**③ 로우 소스 생성(Row Source Generation)**
-
-선택된 실행 계획을 SQL 실행 엔진이 처리할 수 있는 내부 연산 구조로 만든다.
+| 단계                      | 역할                                                                                                                                                            |
+| ------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **SQL Parsing**           | SQL을 분석해 파싱 트리(Parse Tree)를 생성하고, 문법 검사(Syntax Check)와 테이블·컬럼의 존재 여부, 접근 권한 등을 확인하는 의미 검사(Semantic Check)를 수행한다. |
+| **SQL Optimization**      | 테이블·인덱스·컬럼의 통계정보 등을 활용하여 가능한 실행 경로의 예상 비용을 비교하고 실행 계획(Execution Plan)을 선택한다.                                       |
+| **Row Source Generation** | 선택된 실행 계획을 SQL 실행 엔진이 처리할 수 있는 내부 연산 구조로 변환한다.                                                                                    |
+| **SQL Execution**         | 실행 계획에 따라 데이터 블록에 접근하고 조회·조인·정렬 등의 연산을 수행하여 결과를 생성한다.                                                                    |
 
 ### 1.3. 실행 계획, 비용, 옵티마이저 힌트
 
@@ -65,9 +45,9 @@ WHERE e.DEPT_ID = 110;
 
 ### 2.1. SGA, Shared Pool, Library Cache
 
-Oracle의 **SGA(System Global Area)**는 여러 프로세스가 함께 사용하는 공유 메모리 영역이다. SQL 실행 정보를 재사용하거나, 자주 사용하는 데이터 블록을 메모리에 저장하는 데 활용된다.
+**SGA(System Global Area)** 는 여러 프로세스가 함께 사용하는 공유 메모리 영역이다. SQL 실행 정보를 재사용하거나, 자주 사용하는 데이터 블록을 메모리에 저장하는 데 활용된다.
 
-<p align="center"><img src="../assets/images/sql-tuning-ch1-sga.png" alt="SGA의 주요 캐시와 역할" width="500"></p>
+<img src="../assets/images/sql-tuning-ch1-sga.png" alt="SGA의 주요 캐시와 역할" width="500">
 
 | 구성 요소                 | 위치             | 역할                                         |
 | ------------------------- | ---------------- | -------------------------------------------- |
@@ -82,15 +62,13 @@ Oracle의 **SGA(System Global Area)**는 여러 프로세스가 함께 사용하
 
 같은 SQL이 반복 실행될 때마다 새로운 실행 계획을 만들면 CPU 사용과 공유 메모리 경합이 증가할 수 있다. Oracle은 Library Cache의 공유 커서(Shared Cursor)를 재사용하여 이를 줄인다.
 
-<p align="center"><img src="../assets/images/sql-tuning-ch1-parse.png" alt="SQL 공유 커서 재사용과 파싱 흐름" width="500"></p>
+<img src="../assets/images/sql-tuning-ch1-parse.png" alt="SQL 공유 커서 재사용과 파싱 흐름" width="500">
 
 | 구분      | Soft Parse                     | Hard Parse                            |
 | --------- | ------------------------------ | ------------------------------------- |
 | 발생 상황 | 재사용 가능한 공유 커서를 찾음 | 재사용할 커서가 없거나 사용할 수 없음 |
 | 처리      | 기존 실행 정보 재사용          | 최적화·로우 소스 생성 등 수행         |
 | 특징      | 상대적으로 비용이 낮음         | CPU와 공유 자원을 더 많이 사용        |
-
-**Soft Parse도 재사용 가능 여부를 확인하는 파싱 작업은 수행하지만, 기존 실행 계획을 재사용하므로 Hard Parse보다 비용이 적다.**
 
 ### 2.3. 이름 없는 SQL과 바인드 변수
 
@@ -103,9 +81,7 @@ SELECT NAME FROM S_EMP WHERE DEPT_ID = 110;
 SELECT NAME FROM S_EMP WHERE DEPT_ID = 113;
 ```
 
-두 SQL은 조회 조건의 값만 다르지만, SQL 텍스트가 서로 다르다.
-
-이러한 SQL이 반복적으로 생성되면 **Library Cache에 유사한 SQL이 다수 저장되고, 불필요한 Hard Parsing이 증가**할 수 있다. 이는 CPU 사용량과 공유 메모리 경합을 증가시켜 성능 저하로 이어질 수 있다.
+조회 조건의 값만 다른 SQL이 반복적으로 생성되면 **Library Cache에 유사한 SQL이 다수 저장되고 불필요한 Hard Parsing이 증가**할 수 있다. 그 결과 CPU 사용량과 공유 메모리 경합이 늘어난다.
 
 #### 바인드 변수(Bind Variable)
 
@@ -117,9 +93,7 @@ FROM S_EMP
 WHERE DEPT_ID = :dept_id;
 ```
 
-위 SQL은 `:dept_id`에 서로 다른 값을 전달하더라도 SQL 텍스트를 동일하게 유지할 수 있다.
-
-따라서 기존 SQL과 실행 계획을 공유·재사용할 가능성이 높아지고, 불필요한 Hard Parsing을 줄일 수 있다.
+`:dept_id`에 다른 값을 전달해도 SQL 텍스트는 같으므로, 공유 커서와 실행 계획의 재사용 가능성이 높아지고 불필요한 Hard Parsing을 줄일 수 있다.
 
 Java에서는 JDBC의 `PreparedStatement`를 통해 바인드 변수를 사용한다.
 
@@ -137,8 +111,6 @@ try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
 }
 ```
 
-바인드 변수는 **성능뿐 아니라 보안 측면에서도 중요**하다.
-
 - **성능:** SQL과 실행 계획의 재사용 가능성을 높여 Hard Parsing 부담을 줄인다.
 - **보안:** 사용자 입력값을 SQL 명령과 분리하여 데이터로 처리하므로 SQL Injection을 방지한다.
 
@@ -152,15 +124,11 @@ try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
 ### 3.1. 데이터베이스가 I/O 때문에 느려지는 이유
 
-SQL을 실행하려면 테이블이나 인덱스에 저장된 데이터 블록에 접근해야 한다.
-
-필요한 블록이 메모리의 **DB Buffer Cache**에 없으면 디스크에서 읽어와야 한다. 디스크 I/O는 메모리 접근보다 일반적으로 느리며, 이때 서버 프로세스는 I/O가 완료될 때까지 대기할 수 있다.
-
-따라서 **디스크 I/O가 많이 발생하거나 대기 시간이 길어지면 SQL 실행 성능이 저하될 수 있다.**
+SQL을 실행할 때는 필요한 데이터 블록에 접근한다. 디스크에서 블록을 읽는 작업은 메모리 접근보다 일반적으로 느리므로, **물리적 I/O가 많거나 대기 시간이 길어지면 SQL 성능이 저하될 수 있다.**
 
 ### 3.2. Oracle 데이터 저장 구조
 
-<p align="center"><img src="../assets/images/sql-tuning-ch1-storage.png" alt="Oracle의 논리적 저장 구조와 데이터 파일" width="500"></p>
+<img src="../assets/images/sql-tuning-ch1-storage.png" alt="Oracle의 논리적 저장 구조와 데이터 파일" width="500">
 
 | 구성 요소      | 의미                                                 |
 | -------------- | ---------------------------------------------------- |
@@ -202,11 +170,11 @@ WHERE NAME = 'db_block_size';
 
 ### 3.5. 시퀀셜 액세스와 랜덤 액세스
 
-**시퀀셜 액세스(Sequential Access)**는 논리적·물리적으로 연결된 순서에 따라 블록을 차례로 읽는 방식이다. 테이블 전체 스캔은 Extent Map을 참고하여 테이블 블록을 순서대로 읽고, 인덱스 리프 블록도 연결 정보를 따라 순서대로 탐색할 수 있다.
+**시퀀셜 액세스(Sequential Access)** 는 논리적·물리적으로 연결된 순서에 따라 블록을 차례로 읽는 방식이다. 테이블 전체 스캔은 Extent Map을 참고하여 테이블 블록을 순서대로 읽고, 인덱스 리프 블록도 연결 정보를 따라 순서대로 탐색할 수 있다.
 
-**랜덤 액세스(Random Access)**는 순서와 관계없이 필요한 블록 주소로 직접 접근하는 방식이다. 대표적인 사례는 인덱스에서 찾은 `ROWID`를 이용해 테이블 블록을 읽는 작업이다.
+**랜덤 액세스(Random Access)** 는 순서와 관계없이 필요한 블록 주소로 직접 접근하는 방식이다. 대표적인 사례는 인덱스에서 찾은 `ROWID`를 이용해 테이블 블록을 읽는 작업이다.
 
-<p align="center"><img src="../assets/images/sql-tuning-ch1-scan.png" alt="테이블과 인덱스의 시퀀셜·랜덤 액세스" width="500"></p>
+<img src="../assets/images/sql-tuning-ch1-scan.png" alt="테이블과 인덱스의 시퀀셜·랜덤 액세스" width="500">
 
 | 구분      | Sequential Access                      | Random Access                  |
 | --------- | -------------------------------------- | ------------------------------ |
@@ -220,9 +188,9 @@ WHERE NAME = 'db_block_size';
 
 **DB Buffer Cache**는 데이터 블록을 메모리에 저장하여 불필요한 디스크 I/O를 줄이는 SGA의 공유 메모리 영역이다.
 
-SQL 실행 시 필요한 블록을 먼저 버퍼 캐시에서 찾고, 없으면 디스크에서 읽어 캐시에 적재한다.
+일반적인 버퍼 캐시 경유 읽기에서는 필요한 블록을 캐시에서 찾고, 없으면 디스크에서 읽어 캐시에 적재한다.
 
-<p align="center"><img src="../assets/images/sql-tuning-ch1-cache-io.png" alt="버퍼 캐시 적중과 논리적·물리적 I/O" width="500"></p>
+<img src="../assets/images/sql-tuning-ch1-cache-io.png" alt="버퍼 캐시 적중과 논리적·물리적 I/O" width="500">
 
 - **논리적 I/O(Logical I/O):** DB Buffer Cache의 데이터 블록에 접근하는 작업
 - **물리적 I/O(Physical I/O):** 디스크(스토리지)에서 데이터 블록을 실제로 읽어오는 작업
@@ -241,11 +209,13 @@ SQL 실행 시 필요한 블록을 먼저 버퍼 캐시에서 찾고, 없으면 
 
 따라서 SQL의 데이터 접근 비용을 줄이려면 **불필요한 논리적 I/O 자체를 줄이는 것**이 중요하다.
 
+※ 병렬 조회 등에서 사용하는 **Direct Path Read**는 DB Buffer Cache를 거치지 않고 디스크의 데이터를 PGA로 직접 읽을 수 있다.
+
 ### 3.7. Single Block I/O와 Multiblock I/O
 
 **Single Block I/O와 Multiblock I/O**는 한 번의 물리적 I/O 요청(I/O Call)으로 읽어오는 데이터 블록의 개수에 따른 구분이다.
 
-<p align="center"><img src="../assets/images/sql-tuning-ch1-single-multi.png" alt="Single Block I/O와 Multiblock I/O" width="500"></p>
+<img src="../assets/images/sql-tuning-ch1-single-multi.png" alt="Single Block I/O와 Multiblock I/O" width="500">
 
 | 구분      | Single Block I/O                    | Multiblock I/O                               |
 | --------- | ----------------------------------- | -------------------------------------------- |
@@ -272,19 +242,15 @@ SQL 실행 시 필요한 블록을 먼저 버퍼 캐시에서 찾고, 없으면 
 | 일반적인 물리적 I/O | Multiblock I/O                   | 테이블 접근 시 주로 Single Block I/O          |
 | 유리한 경우         | 대량 데이터 조회, 집계·배치      | 대규모 테이블에서 소량 데이터 조회            |
 
-**인덱스를 사용한다고 항상 성능이 좋은 것은 아니다.**
-
-인덱스로 많은 데이터를 조회하면 ROWID를 이용한 **테이블 랜덤 액세스가 반복**되고, 같은 블록을 여러 번 접근하면서 논리적 I/O가 증가할 수 있다.
-
-반면 Table Full Scan은 테이블 블록을 순차적으로 읽고 Multiblock I/O를 활용할 수 있으므로, 대량 데이터를 처리할 때 더 효율적일 수 있다.
+**인덱스가 항상 빠른 것은 아니다.** 조회할 행이 많으면 ROWID 기반 **테이블 랜덤 액세스가 반복**되어 논리적 I/O가 증가할 수 있다. 반면 Table Full Scan은 많은 블록을 순차적으로 읽으며 Multiblock I/O를 활용할 수 있어 대량 조회에 더 유리할 수 있다.
 
 ### 3.9. 캐시 탐색과 래치(Latch)
 
-Oracle은 DB Buffer Cache에서 원하는 블록을 효율적으로 찾기 위해 **해시 구조(Hash Structure)**를 사용한다.
+Oracle은 DB Buffer Cache에서 원하는 블록을 효율적으로 찾기 위해 **해시 구조(Hash Structure)** 를 사용한다.
 
-블록 주소(DBA)에 해시 함수(Hash Function)를 적용해 해당 **해시 체인(Hash Chain)**을 찾고, 연결된 버퍼 헤더(Buffer Header)를 통해 실제 버퍼 블록에 접근한다.
+블록 주소(DBA)에 해시 함수(Hash Function)를 적용해 해당 **해시 체인(Hash Chain)** 을 찾고, 연결된 버퍼 헤더(Buffer Header)를 통해 실제 버퍼 블록에 접근한다.
 
-<p align="center"><img src="../assets/images/sql-tuning-ch1-hash-latch.png" alt="해시 체인과 버퍼 헤더·버퍼 블록의 연결 구조" width="500"></p>
+<p><img src="../assets/images/sql-tuning-ch1-hash-latch.png" alt="해시 체인과 버퍼 헤더·버퍼 블록의 연결 구조" width="500"></p>
 
 그림에서는 `mod(x, 5)`를 해시 함수로 가정한다. 예를 들어 20번 블록은 `20 % 5 = 0`이므로 0번 해시 체인을 탐색한다.
 

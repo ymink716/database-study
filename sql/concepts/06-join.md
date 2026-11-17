@@ -15,11 +15,11 @@
 
 ## 1. JOIN의 개념과 테이블 연결 관계
 
-**JOIN(조인)**은 두 개 이상의 테이블에서 **서로 연관된 행을 찾아 하나의 조회 결과로 결합하는 방법**이다.
+**JOIN(조인)** 은 두 개 이상의 테이블에서 **서로 연관된 행을 찾아 하나의 조회 결과로 결합하는 방법**이다.
 
 정보를 여러 테이블에 나누어 저장하더라도, 조인하면 필요한 데이터를 함께 조회할 수 있다.
 
-<p align="center"><img src="../../assets/images/sql-join-relationship-textbook.png" alt="S_EMP, S_DEPT, S_REGION의 연결 관계 - SQL의 정석 교재 그림" width="500"></p>
+<p><img src="../../assets/images/sql-join-relationship-textbook.png" alt="S_EMP, S_DEPT, S_REGION의 연결 관계 - SQL의 정석 교재 그림" width="500"></p>
 
 | 연결할 테이블         | 연결 조건                        | 의미                      |
 | --------------------- | -------------------------------- | ------------------------- |
@@ -46,7 +46,7 @@
 
 ## 2. EQUI JOIN: 같은 값으로 연결
 
-**EQUI JOIN(등가 조인)**은 두 테이블의 컬럼 값을 **`=` 연산자로 비교하여 일치하는 행을 연결**하는 조인이다.
+**EQUI JOIN(등가 조인)** 은 두 테이블의 컬럼 값을 **`=` 연산자로 비교하여 일치하는 행을 연결**하는 조인이다.
 
 ```sql
 SELECT e.ID,
@@ -71,7 +71,7 @@ ORDER BY e.ID;
 - `e.DEPT_ID = d.ID`: 두 테이블의 **연결 조건**이다.
 - `e.ID IN (1, 2, 7)`: 연결된 결과 중 직원 번호가 1, 2, 7인 행만 고르는 **조회 조건**이다.
 
-`e`, `d`는 **테이블 별칭(ALIAS)**이다. `S_EMP`와 `S_DEPT`에 모두 `NAME` 컬럼이 있으므로 `e.NAME`, `d.NAME`처럼 구별해서 작성해야 한다. 컬럼 별칭(`AS EMP_NAME`)은 결과에 표시되는 제목을 바꾸는 용도다.
+`e`, `d`는 **테이블 별칭(ALIAS)** 이다. `S_EMP`와 `S_DEPT`에 모두 `NAME` 컬럼이 있으므로 `e.NAME`, `d.NAME`처럼 구별해서 작성해야 한다. 컬럼 별칭(`AS EMP_NAME`)은 결과에 표시되는 제목을 바꾸는 용도다.
 
 여기서 중요한 점은 `WHERE`가 일반적으로 행을 필터링하는 절이지만, **이전 방식의 조인 문법에서는 테이블을 연결하는 조건도 `WHERE`에 작성한다**는 것이다.
 
@@ -79,7 +79,7 @@ ORDER BY e.ID;
 
 ## 3. NON-EQUI JOIN: 범위 조건으로 연결
 
-**NON-EQUI JOIN(비등가 조인)**은 두 테이블을 `=`이 아닌 비교 조건으로 연결하는 조인이다. 대표적으로 **`BETWEEN`, `<`, `>`** 등을 사용한다.
+**NON-EQUI JOIN(비등가 조인)** 은 두 테이블을 `=`이 아닌 비교 조건으로 연결하는 조인이다. 대표적으로 **`BETWEEN`, `<`, `>`** 등을 사용한다.
 
 직원의 급여에 따라 등급을 알아보려면 `S_EMP.SALARY`와 `SALGRADE`의 급여 구간(`LOSAL`~`HISAL`)을 비교해야 한다. 급여와 등급 컬럼의 값이 같은 것은 아니므로 `=` 대신 범위 조건을 사용한다.
 
@@ -110,7 +110,7 @@ ORDER BY e.ID;
 
 ## 4. INNER JOIN: 일치하는 행만 조회
 
-**INNER JOIN(내부 조인)**은 연결 조건에 **일치하는 행만 조회 결과로 반환**한다. 앞에서 배운 EQUI/NON-EQUI가 *연결 조건의 종류*라면, INNER JOIN은 *어떤 행을 남기는지*에 관한 개념이다.
+**INNER JOIN(내부 조인)** 은 연결 조건에 **일치하는 행만 조회 결과로 반환**한다. 앞에서 배운 EQUI/NON-EQUI가 *연결 조건의 종류*라면, INNER JOIN은 *어떤 행을 남기는지*에 관한 개념이다.
 
 지금까지는 `FROM 테이블1, 테이블2 WHERE 연결조건`으로 작성했지만, 연결 조건을 더 분명하게 표현하는 **`JOIN ... ON` 문법**을 사용할 수도 있다.
 
@@ -170,9 +170,9 @@ ORDER BY e.ID;
 
 ## 5. OUTER JOIN: 일치하지 않는 행도 조회
 
-INNER JOIN은 조건에 맞는 행만 보여준다. 반면 **OUTER JOIN(외부 조인)**은 조건에 일치하지 않는 행도 **지정한 테이블 쪽에서는 유지**할 수 있다. 상대 테이블에서 연결되는 행이 없으면 그쪽 컬럼은 `NULL`로 나타난다.
+INNER JOIN은 조건에 맞는 행만 보여준다. 반면 **OUTER JOIN(외부 조인)** 은 조건에 일치하지 않는 행도 **지정한 테이블 쪽에서는 유지**할 수 있다. 상대 테이블에서 연결되는 행이 없으면 그쪽 컬럼은 `NULL`로 나타난다.
 
-<p align="center"><img src="../../assets/images/sql-join-types.png" alt="INNER, LEFT, RIGHT, FULL OUTER JOIN의 행 유지 차이" width="500"></p>
+<p><img src="../../assets/images/sql-join-types.png" alt="INNER, LEFT, RIGHT, FULL OUTER JOIN의 행 유지 차이" width="500"></p>
 
 | 종류               | 남기는 행                                  |
 | ------------------ | ------------------------------------------ |
@@ -211,7 +211,7 @@ ORDER BY c.ID;
 
 ### Oracle `(+)` 문법
 
-<p align="center"><img src="../../assets/images/sql-outer-join.png" alt="OUTER JOIN" width="500"></p>
+<p><img src="../../assets/images/sql-outer-join.png" alt="OUTER JOIN" width="500"></p>
 
 ```sql
 SELECT e.NAME AS SALES_REP_NAME,
@@ -299,7 +299,7 @@ WHERE m.ID IS NULL;
 
 ### 조인 조건을 빠뜨리면: Cartesian Product
 
-연결 조건 없이 두 테이블의 모든 행을 조합하면 **Cartesian Product(카테시안 곱)**가 생긴다. 의도적으로 모든 조합을 만들 때는 `CROSS JOIN`을 사용한다.
+연결 조건 없이 두 테이블의 모든 행을 조합하면 **Cartesian Product(카테시안 곱)** 가 생긴다. 의도적으로 모든 조합을 만들 때는 `CROSS JOIN`을 사용한다.
 
 ```sql
 SELECT COUNT(*) AS COMBINATIONS
@@ -317,7 +317,7 @@ CROSS JOIN SALGRADE;
 
 `JOIN`이 서로 연관된 행을 찾아 **컬럼을 옆으로 붙이는 것**에 가깝다면, SET 연산자는 **여러 SELECT 결과의 행을 위아래로 합치는 것**에 가깝다.
 
-<p align="center"><img src="../../assets/images/sql-join-vs-union-all.png" alt="JOIN은 가로 결합, UNION ALL은 세로 결합" width="500"></p>
+<p><img src="../../assets/images/sql-join-vs-union-all.png" alt="JOIN은 가로 결합, UNION ALL은 세로 결합" width="500"></p>
 
 ### UNION ALL과 UNION
 
@@ -346,7 +346,7 @@ ORDER BY ID;
 
 **UNION 결과:** `2, 6, 7, 8, 9, 10, 16, 17` (8행)
 
-** `UNION`은 결과 사이에 같은 행이 있는지 확인하고 제거해야 하므로, **중복 제거가 필요하지 않다면 `UNION ALL`이 일반적으로 더 적은 작업으로 처리될 수 있다.\*\*
+`UNION`은 결과 사이에 같은 행이 있는지 확인하고 제거해야 하므로, 중복 제거가 필요하지 않다면 `UNION ALL`이 일반적으로 더 적은 작업으로 처리될 수 있다.
 
 ### 다른 SET 연산자
 

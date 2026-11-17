@@ -76,7 +76,7 @@ CREATE TABLE EMP (
 
 ## 4. DML: INSERT, UPDATE, DELETE
 
-**DML(Data Manipulation Language)**은 테이블에 저장된 데이터를 추가하거나, 기존 값을 수정하거나, 삭제할 때 사용하는 명령어다. 테이블 구조를 바꾸는 것이 아니라 **테이블 안의 행(Row)을 다룬다**는 점이 핵심이다.
+**DML(Data Manipulation Language)** 은 테이블에 저장된 데이터를 추가하거나, 기존 값을 수정하거나, 삭제할 때 사용하는 명령어다. 테이블 구조를 바꾸는 것이 아니라 **테이블 안의 행(Row)을 다룬다**는 점이 핵심이다.
 
 ### INSERT: 데이터 추가
 
